@@ -44,7 +44,7 @@ elif DATASET=="oct18interviews":
 
 querycorpus = []
 for i in range(0, len(dataset)):
-    query = re.sub('[^a-zA-Z]', ' ', dataset['Question'][i])
+    query = re.sub('[^a-zA-Z]', ' ', dataset['Q'][i])
     query = query.lower()
     query = query.split()
     query = [ps.stem(word) for word in query if not word in set(stopwords.words('english'))]
@@ -78,14 +78,14 @@ def toia_answer(newquery, k=5):
     elif sorted_freq[k-1]!=sorted_freq[k] or sorted_freq[k-1]==sorted_freq[k]==0:
         selected = related_docs_indices[:k]
        
-        return dataset.iloc[selected[0]]['Answer']
+        return dataset.iloc[selected[0]]['A']
 #        return dataset.iloc[selected[0]]['A'], dataset.iloc[selected,:(k-1)]   
 #        print("\n Cosine Similarities:", sorted_freq[:k], "\n")
     else:
         indeces = numpy.where(numpy.roll(sorted_freq,1)!=sorted_freq)
         selected = related_docs_indices[:indeces[0][indeces[0]>=k][0]]
     
-        return dataset.iloc[selected[0]]['Answer']
+        return dataset.iloc[selected[0]]['A']
 #        return dataset.iloc[selected[0]]['A'], dataset.iloc[selected,:(k-1)]
 #        print("\n Cosine Similarities:", sorted_freq[:k], "\n")
 
