@@ -21,7 +21,11 @@ Fill these in in the right place in the script you're using.
 
 ## Two versions
 This Repo contains two different skeletons:
-* herokubot.py - Using the builtin webhookserver
+* herokubot.py - Using the builtin webhookserver. This script fetches the variables TOKEN and NAME (heroku app name) from the environment, so remember to set them up running:
+```
+$ heroku config:set TOKEN=<your-telegram-bot-token>
+$ heroku config:set NAME=<appname>
+```
 * herokubotcp.py - Using cherrypy. It even also runs a welcome webpage.
 
 Mind that If you want to use the second example, you'll have to add `cherrypy` to the `requirements.txt`.
