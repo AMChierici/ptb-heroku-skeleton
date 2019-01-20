@@ -20,7 +20,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.stem.snowball import SnowballStemmer
 
-
+DATASET = os.environ.get('DATASET')
 ps = SnowballStemmer('english')
 
 def preprocess(text):
@@ -30,8 +30,17 @@ def preprocess(text):
             text = text.split()
             text = [ps.stem(word) for word in text if not word in set(stopwords.words('english'))]
             return ' '.join(text)
-        
-dataset = pandas.read_csv('Wizard-of-Oz-dataset - Test Questions.csv', encoding='ISO-8859-1')
+  
+if DATASET=="testdata":
+    dataset = pandas.read_csv('Wizard-of-Oz-dataset - Test Questions.csv', encoding='utf-8-sig')
+elif DATASET=="oct18interviews":
+    dataset1 = pandas.read_csv('interview1.csv', encoding='ISO-8859-1')
+    dataset2 = pandas.read_csv('interview2.csv', encoding='ISO-8859-1')
+    dataset3 = pandas.read_csv('interview3.csv', encoding='ISO-8859-1')
+    
+    dataset = pandas.concat([dataset1, dataset2, dataset3])
+    #Reset index otherwise during the loop below we select multiple rows (pandas.concat results in repeated indices)
+    dataset = dataset.reset_index(drop=True)
 
 querycorpus = []
 for i in range(0, len(dataset)):
