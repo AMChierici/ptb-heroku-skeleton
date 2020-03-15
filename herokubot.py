@@ -41,6 +41,10 @@ elif DATASET=="oct18interviews":
     dataset = pandas.concat([dataset1, dataset2, dataset3])
     #Reset index otherwise during the loop below we select multiple rows (pandas.concat results in repeated indices)
     dataset = dataset.reset_index(drop=True)
+elif DATASET=="mdc": ##For 'margarita dialogue corpus'
+    dataset = pandas.read_csv('MargaritaCorpusKB-bert.csv', encoding='utf-8')
+    dataset = dataset.rename(columns={"title": "Q", "paragraphs": "A"})
+    
 
 querycorpus = []
 for i in range(0, len(dataset)):
