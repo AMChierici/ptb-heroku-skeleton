@@ -99,19 +99,19 @@ def toia_answer(newquery, k=5):
 keyboard = [[InlineKeyboardButton("👍", callback_data='1'),
              InlineKeyboardButton("👎", callback_data='0')]]
 
-def toia_bot(update, context, keyboard=keyboard):
+def toia_bot(bot, update, context, keyboard=keyboard):
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text(toia_answer(update.message.text), reply_markup=reply_markup)
     #update.message.reply_text('Please choose:', reply_markup=reply_markup)
 
-def button(update, context):
+def button(bot, update, context):
     query = update.callback_query
     query.edit_message_text(text="Rating given: {}".format(query.data))
 
-def help(update, context):
+def help(bot, update, context):
     update.message.reply_text("Use /start to test this bot.")
     
-def error(update, context):
+def error(bot, update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 
