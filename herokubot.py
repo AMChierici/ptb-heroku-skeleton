@@ -1,6 +1,7 @@
 import logging
 import os
 
+from telegram import ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
@@ -93,15 +94,15 @@ def toia_answer(newquery, k=5):
 #-------------------------------------------#
 
 
+custom_keyboard = [['top-left', 'top-right'], 
+                   ['bottom-left', 'bottom-right']]
+reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+
 def start(bot, update):
     update.effective_message.reply_text("Hi!")
     
 def toia_bot(bot, update):
-    update.effective_message.reply_text(toia_answer(update.effective_message.text))
-
-def button(update, context):
-    query = update.callback_query
-    query.edit_message_text(text="Rating given: {}".format(query.data))
+    update.effective_message.reply_text(toia_answer(update.effective_message.text), reply_markup=reply_markup)
 
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"', update, error)
