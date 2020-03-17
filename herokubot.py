@@ -68,6 +68,11 @@ tfidf_querycorpus = TfidfVectorizer().fit_transform(querycorpus)
 
 def toia_answer(newquery, k=5):
 
+    if newquery=="👍":
+        return "Good answer recorder"
+    elif newquery=="👎":
+        return "Bad answer recorder"
+    
     tfidf_newquery = transformer.fit_transform(trainingvoc_vectorizer.fit_transform(numpy.array([preprocess(newquery)]))) 
     cosine_similarities = cosine_similarity(tfidf_newquery, tfidf_querycorpus)
     related_docs_indices = (-cosine_similarities[0]).argsort()
@@ -96,23 +101,23 @@ def toia_answer(newquery, k=5):
 
 #-------------------------------------------#
 
-keyboard = [[InlineKeyboardButton("👍", callback_data='1'),
-             InlineKeyboardButton("👎", callback_data='0')]]
+keyboard = [[KeyboardButton("👍"),
+             KeyboardButton("👎")]]
 
-def toia_bot(bot, update, context, keyboard=keyboard):
+def toia_bot(bot, update, keyboard=keyboard):
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text(toia_answer(update.message.text), reply_markup=reply_markup)
+    update.effective_message.reply_text(toia_answer(update.effective_message.text), reply_markup=reply_markup)
     #update.message.reply_text('Please choose:', reply_markup=reply_markup)
 
-def button(bot, update, context):
-    query = update.callback_query
-    query.edit_message_text(text="Rating given: {}".format(query.data))
+#def button(update, context):
+#    query = update.callback_query
+#    query.edit_message_text(text="Rating given: {}".format(query.data))
 
-def help(bot, update, context):
+def help(update, context):
     update.message.reply_text("Use /start to test this bot.")
     
-def error(bot, update, context):
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
+def error(bot, update, error):
+    logger.warning('Update "%s" caused error "%s"', update, error)
 
 
 if __name__ == "__main__":
@@ -129,13 +134,12 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     # Set up the Updater
-    updater = Updater(TOKEN, use_context=True)
+    updater = Updater(TOKEN) #, use_context=True
     dp = updater.dispatcher
     # Add handlers
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(MessageHandler(Filters.text, toia_bot))
-    dp.add_handler(CallbackQueryHandler(button))
-    dp.add_handler(CommandHandler('help', help))
+#    dp.add_handler(CallbackQueryHandler(button))
     dp.add_error_handler(error)
 
     # Start the webhook
