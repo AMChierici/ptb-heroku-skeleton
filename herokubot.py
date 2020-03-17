@@ -1,7 +1,7 @@
 import logging
 import os
 
-from telegram import ReplyKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup #, ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 
@@ -65,10 +65,10 @@ tfidf_querycorpus = TfidfVectorizer().fit_transform(querycorpus)
 
 def toia_answer(newquery, k=5):
     
-    if newquery=="👎":
-        return "[Bad feedback recorded]"
-    if newquery=="👍":
-        return "[Good feedback recorded]"
+    # if newquery=="👎":
+    #     return "[Bad feedback recorded]"
+    # if newquery=="👍":
+    #     return "[Good feedback recorded]"
     
     tfidf_newquery = transformer.fit_transform(trainingvoc_vectorizer.fit_transform(numpy.array([preprocess(newquery)]))) 
     cosine_similarities = cosine_similarity(tfidf_newquery, tfidf_querycorpus)
@@ -98,9 +98,10 @@ def toia_answer(newquery, k=5):
 
 #-------------------------------------------#
 
-
-custom_keyboard = [["👍", "👎"]]
-reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+# custom_keyboard = [["👍", "👎"]]
+# reply_markup = ReplyKeyboardMarkup(custom_keyboard)
+custom_keyboard = [[InlineKeyboardButton("👍", callback_data=1), InlineKeyboardButton("👎", callback_data=0)]]
+reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def start(bot, update):
     update.effective_message.reply_text("Hi!")
