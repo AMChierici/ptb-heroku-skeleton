@@ -65,6 +65,11 @@ tfidf_querycorpus = TfidfVectorizer().fit_transform(querycorpus)
 
 def toia_answer(newquery, k=5):
     
+    if newquery=="👎":
+        return "[Bad feedback recorded]"
+    if newquery=="👍":
+        return "[Good feedback recorded]"
+    
     tfidf_newquery = transformer.fit_transform(trainingvoc_vectorizer.fit_transform(numpy.array([preprocess(newquery)]))) 
     cosine_similarities = cosine_similarity(tfidf_newquery, tfidf_querycorpus)
     related_docs_indices = (-cosine_similarities[0]).argsort()
@@ -94,8 +99,7 @@ def toia_answer(newquery, k=5):
 #-------------------------------------------#
 
 
-custom_keyboard = [['top-left', 'top-right'], 
-                   ['bottom-left', 'bottom-right']]
+custom_keyboard = [["👍", "👎"]]
 reply_markup = ReplyKeyboardMarkup(custom_keyboard)
 
 def start(bot, update):
