@@ -96,12 +96,12 @@ def toia_answer(newquery, k=5):
 
 #-------------------------------------------#
 
-keyboard = [[InlineKeyboardButton("Thumb Up", callback_data='1'),
-             InlineKeyboardButton("Thumb Down", callback_data='0')]]
+keyboard = [[InlineKeyboardButton("👍", callback_data='1'),
+             InlineKeyboardButton("👎", callback_data='0')]]
 
-def toia_bot(bot, update):
+def toia_bot(bot, update, keyboard=keyboard):
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text(toia_answer(update.effective_message.text), reply_markup=reply_markup)
+    update.effective_message.reply_text(toia_answer(update.effective_message.text), reply_markup=reply_markup)
     #update.message.reply_text('Please choose:', reply_markup=reply_markup)
 
 def button(update, context):
