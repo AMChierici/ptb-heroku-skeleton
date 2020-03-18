@@ -111,7 +111,13 @@ def toia_bot(update, context):
 
 def button(update, context):
     query = update.callback_query
-    query.edit_message_text(text="[thanks, rating recorded: {}]".format(query.data))
+    #query.edit_message_text(text="[thanks, rating recorded: {}]".format(query.data))
+    ####### ADD CODE HERE TO SAVE RESULTS #######
+    
+    
+    
+    
+    ######## END OF CODE TO SAVE RESULTS ########
 
 def help(update, context):
     update.message.reply_text("Use /start to test this bot.")
