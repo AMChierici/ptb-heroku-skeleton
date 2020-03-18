@@ -107,7 +107,7 @@ def start(update, context):
     update.message.reply_text("Hello! This is an experimental environment built by Alberto M. Chierici, researhcer at New York Univeristy Abu Dhabi. We are researching on modeling dialogue and building applications where you can chat with previously recorded human avatars. You'll be able to chat with our first avatar. Please go ahead and get to know the avatar as you would do when meeting a person for the first time. To help us improving the system, when you think the answer you receive is appropriate, please press the 👍 button below the message. If the answer doesn't make sense, give a negative rating by using the 👎 button." )
     
 def toia_bot(update, context):
-    update.message.reply_text(toia_answer(message.text.encode('utf-8').decode()), reply_markup=reply_markup)
+    update.message.reply_text(toia_answer(update.message.text.encode('utf-8').decode()), reply_markup=reply_markup)
 
 def button(update, context):
     query = update.callback_query
