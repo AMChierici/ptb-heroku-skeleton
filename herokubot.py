@@ -2,7 +2,7 @@ import logging
 import os
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup #, ReplyKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
 
 # -------------------- script for A.I. -----------------------#
@@ -103,14 +103,21 @@ def toia_answer(newquery, k=5):
 custom_keyboard = [[InlineKeyboardButton("👍", callback_data=1), InlineKeyboardButton("👎", callback_data=0)]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
-def start(bot, update):
-    update.effective_message.reply_text("Hi!")
+def start(update, context):
+    update.message.reply_text("Hello! This is an experimental environment built by Alberto M. Chierici, researhcer at New York Univeristy Abu Dhabi. We are researching on modeling dialogue and building applications where you can chat with previously recorded human avatars. You'll be able to chat with our first avatar. Please go ahead and get to know the avatar as you would do when meeting a person for the first time. To help us improving the system, when you think the answer you receive is appropriate, please press the 👍 button below the message. If the answer doesn't make sense, give a negative rating by using the 👎 button." )
     
-def toia_bot(bot, update):
-    update.effective_message.reply_text(toia_answer(update.effective_message.text), reply_markup=reply_markup)
+def toia_bot(update, context):
+    update.message.reply_text(toia_answer(update.message.text), reply_markup=reply_markup)
 
-def error(bot, update, error):
-    logger.warning('Update "%s" caused error "%s"', update, error)
+def button(update, context):
+    query = update.callback_query
+    query.edit_message_text(text="Selected option: {}".format(query.data))
+
+def help(update, context):
+    update.message.reply_text("Use /start to test this bot.")
+
+def error(update, context):
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 
 if __name__ == "__main__":
@@ -127,11 +134,13 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     # Set up the Updater
-    updater = Updater(TOKEN)
+    updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
     # Add handlers
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(MessageHandler(Filters.text, toia_bot))
+    dp.add_handler(CallbackQueryHandler(button))
+    dp.add_handler(CommandHandler('help', help))
     dp.add_error_handler(error)
 
     # Start the webhook
