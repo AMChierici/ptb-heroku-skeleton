@@ -100,7 +100,7 @@ def toia_answer(newquery, k=5):
 
 # custom_keyboard = [["👍", "👎"]]
 # reply_markup = ReplyKeyboardMarkup(custom_keyboard)
-custom_keyboard = [[InlineKeyboardButton("👍", callback_data=1), InlineKeyboardButton("👎", callback_data=0)]]
+custom_keyboard = [[InlineKeyboardButton("👍", callback_data='1'), InlineKeyboardButton("👎", callback_data='0')]]
 reply_markup = InlineKeyboardMarkup(custom_keyboard)
 
 def start(update, context):
